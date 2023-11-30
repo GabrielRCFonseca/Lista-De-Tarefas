@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lista_de_tarefas/pages/todo_list_page.dart';
+
 
 void main(){
 
@@ -14,13 +15,5 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: TodoListPage(),
     );
-  }
-}
-class TodoListPage extends StatelessWidget {
-  const TodoListPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(color: Colors.yellow,);
   }
 }
