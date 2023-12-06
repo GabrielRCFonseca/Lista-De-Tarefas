@@ -1,36 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:lista_de_tarefas/models/todo.dart';
+import 'package:lista_de_tarefas/widgets/todo_list_item.dart';
 
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
   TodoListPage({super.key});
 
-  final TextEditingController emailController = TextEditingController();
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  final TextEditingController todoController = TextEditingController();
+
+  List<Todo> todos = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Adicione uma tarefa',
-                    hintText: 'Ex. Estudar Flutter',
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: todoController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Adicione uma tarefa',
+                          hintText: 'Ex. Estudar Flutter',
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    ElevatedButton(onPressed: () {
+                      String text = todoController.text;
+                      setState(() {
+                        Todo newTodo = Todo(
+                          title: text,
+                          date: DateTime.now()
+                        );
+                        todos.add(newTodo);
+                      });
+                      todoController.clear();
+                    },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff00d7f3),
+                            padding: EdgeInsets.all(15)
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          size: 30,
+                        ))
+                  ],
+                ),
+                SizedBox(height: 16),
+                Flexible(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for(Todo todo in todos)
+                        TodoListItem(
+                          todo: todo,
+                        ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(width: 8),
-              ElevatedButton(onPressed: () {},
-                  child: Text('+'))
-            ],
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded
+                      (child: Text('Você possui ${todos.length} terefas pendentes')),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff00d7f3),
+                        padding: EdgeInsets.all(14),
+                      ),
+                      child: Text('Limpar Tudo'),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-
